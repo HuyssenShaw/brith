@@ -13,61 +13,33 @@
       box-sizing: border-box;
     }
 
-    /* ========== 优化：html/body高度适配，解决手机端vh兼容问题 ========== */
-    html {
-      height: 100%;
-      -webkit-text-size-adjust: 100%;
-    }
-
+    /* ========== 修改：页面基础配置，允许纵向滚动 ========== */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       width: 100vw;
-      min-height: 100%;
-      min-height: -webkit-fill-available;
-      /* 适配iOS Safari */
+      min-height: 100vh;
       overflow-x: hidden;
       overflow-y: auto;
       position: relative;
     }
 
-    /* ========== 优化：MP4背景视频 手机端专属优化 ========== */
+    /* ========== 修改：MP4背景视频仅占第一屏 ========== */
     .bg-video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      height: -webkit-fill-available;
-      /* 适配iOS地址栏 */
       object-fit: cover;
       z-index: -1;
       filter: brightness(0.7);
-      /* 核心优化：开启硬件加速，减少页面重绘卡顿 */
-      transform: translateZ(0);
-      will-change: transform;
-      /* 禁止视频被长按选中，避免手机端误触 */
-      pointer-events: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    /* 视频加载占位图，避免黑屏 */
-    .video-poster {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      height: -webkit-fill-available;
-      background: #111 url("video-poster.jpg") no-repeat center center / cover;
-      z-index: -2;
+      /* 保证白色文字清晰，视频过亮可调整数值 */
     }
 
     /* 全屏主容器（第一屏） */
     .hero {
       width: 100%;
       height: 100vh;
-      height: -webkit-fill-available;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -164,33 +136,37 @@
       object-fit: cover;
     }
 
-    /* 参与项目板块样式 */
+    /* ========== 新增：参与项目板块样式 ========== */
     .projects {
       width: 100%;
       min-height: 100vh;
+      /* 浅灰色背景，可在url内填入雪山背景图地址 */
       background: #edf0f2 url("") no-repeat bottom center / cover;
       padding: 6rem 5%;
       position: relative;
     }
 
-    /* 参与项目标题：向下平滑出现效果 */
+    /* 参与项目标题：核心向下平滑出现效果 */
     .section-title {
       font-size: clamp(3rem, 8vw, 5rem);
       font-weight: 900;
       text-align: center;
       color: #000;
       margin-bottom: 6rem;
+      /* 初始状态：透明、位置偏上 */
       opacity: 0;
       transform: translateY(-60px);
+      /* 平滑过渡动画 */
       transition: all 0.8s ease-out;
     }
 
+    /* 标题激活状态：滚动到对应位置触发，向下滑入+淡入 */
     .section-title.active {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* 项目网格布局 */
+    /* 项目网格布局：完美还原上2下3的排版 */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -199,6 +175,7 @@
       margin: 0 auto;
     }
 
+    /* 项目卡片通用样式 */
     .project-card {
       text-align: center;
       display: flex;
@@ -207,17 +184,20 @@
       gap: 1rem;
     }
 
+    /* 第一行2个项目，各占3列 */
     .project-card:nth-child(1),
     .project-card:nth-child(2) {
       grid-column: span 3;
     }
 
+    /* 第二行3个项目，各占2列 */
     .project-card:nth-child(3),
     .project-card:nth-child(4),
     .project-card:nth-child(5) {
       grid-column: span 2;
     }
 
+    /* 项目图标样式：橙色，和设计图一致 */
     .project-icon {
       width: 4rem;
       height: 4rem;
@@ -225,6 +205,7 @@
       margin-bottom: 0.5rem;
     }
 
+    /* 项目标题 */
     .project-card h3 {
       font-size: 1.8rem;
       font-weight: 700;
@@ -232,6 +213,7 @@
       margin: 0;
     }
 
+    /* 项目描述文本 */
     .project-card p {
       font-size: 1.1rem;
       line-height: 1.5;
@@ -240,8 +222,10 @@
       margin: 0;
     }
 
-    /* 响应式适配 */
+    /* ========== 响应式适配 ========== */
     @media (max-width: 768px) {
+
+      /* 首页适配 */
       .hero {
         flex-direction: column;
         justify-content: center;
@@ -249,7 +233,6 @@
         gap: 2rem;
         height: auto;
         min-height: 100vh;
-        min-height: -webkit-fill-available;
       }
 
       .content {
@@ -265,6 +248,7 @@
         flex: none;
       }
 
+      /* 项目板块移动端适配：改为单列布局 */
       .projects-grid {
         grid-template-columns: 1fr;
       }
@@ -281,14 +265,9 @@
 </head>
 
 <body>
-  <!-- 新增：视频加载占位图，避免手机端加载时黑屏 -->
-  <div class="video-poster"></div>
-
-  <!-- ========== 优化：视频标签 手机端兼容+加载优化 ========== -->
-  <video class="bg-video" id="bgVideo" autoplay loop muted playsinline webkit-playsinline preload="auto"
-    poster="video-poster.jpg" x5-video-player-type="h5" x5-video-player-fullscreen="false" x5-playsinline>
-    <source src="71122-537102350_small.mp4" type="video/mp4">
-    <!-- 视频加载失败兜底 -->
+  <!-- 第一屏背景视频 -->
+  <video class="bg-video" autoplay loop muted playsinline>
+    <source src="back.mp4" type="video/mp4">
     你的浏览器不支持视频播放，请升级浏览器
   </video>
 
@@ -307,7 +286,7 @@
     </div>
   </div>
 
-  <!-- 参与项目板块 -->
+  <!-- ========== 新增：参与项目板块 ========== -->
   <section class="projects">
     <h2 class="section-title" id="section-title">参与项目</h2>
     <div class="projects-grid">
@@ -363,61 +342,47 @@
     </div>
   </section>
 
-  <!-- 优化后的JS代码 -->
+  <!-- JavaScript 功能代码 -->
   <script>
     // 原有功能：动态时间+生日判断
     window.onload = function () {
+      // 1. 获取当前时间
       const now = new Date();
       const year = now.getFullYear();
-      const month = now.getMonth() + 1;
+      const month = now.getMonth() + 1; // 月份是0-11，需要+1
       const date = now.getDate();
-      const hours = String(now.getHours()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0'); // 补零，例如 9点 -> 09
       const minutes = String(now.getMinutes()).padStart(2, '0');
 
+      // 2. 拼接基础时间文本
       let textContent = `现在是${year}年${month}月${date}日 ${hours}:${minutes}`;
+
+      // 3. 判断是否是生日当天（3月11日）
       if (month === 3 && date === 11) {
         textContent += " 生日快乐！";
       }
-      document.getElementById('dynamic-text').innerText = textContent;
 
-      // 视频加载完成后隐藏占位图
-      const bgVideo = document.getElementById('bgVideo');
-      bgVideo.oncanplaythrough = function () {
-        document.querySelector('.video-poster').style.opacity = 0;
-      };
+      // 4. 将文本放入页面中
+      document.getElementById('dynamic-text').innerText = textContent;
     };
 
-    // ========== 核心优化：手机端性能控制 ==========
-    const bgVideo = document.getElementById('bgVideo');
-    const windowHeight = window.innerHeight;
-
-    // 1. 滚动超过第一屏，自动暂停视频，减少性能消耗
+    // ========== 新增：滚动监听，实现标题向下平滑出现 ==========
     window.addEventListener('scroll', function () {
-      const scrollY = window.scrollY;
-      // 项目标题动画
       const title = document.getElementById('section-title');
       const projectsSection = document.querySelector('.projects');
+      // 视口高度
+      const windowHeight = window.innerHeight;
+      // 项目板块距离页面顶部的距离
       const sectionTop = projectsSection.offsetTop;
+      // 当前滚动距离
+      const scrollY = window.scrollY;
+
+      // 当项目板块进入视口时，触发标题出现动画
       if (scrollY + windowHeight > sectionTop + 100) {
         title.classList.add('active');
       } else {
+        // 向上滚动离开板块时，恢复初始状态
         title.classList.remove('active');
-      }
-
-      // 视频暂停/播放控制：滑出第一屏暂停，滑回来播放
-      if (scrollY > windowHeight * 0.8) {
-        if (!bgVideo.paused) bgVideo.pause();
-      } else {
-        if (bgVideo.paused) bgVideo.play().catch(() => { }); // 捕获浏览器自动播放限制报错
-      }
-    });
-
-    // 2. 页面切后台/最小化，暂停视频，节省电量和性能
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        bgVideo.pause();
-      } else {
-        bgVideo.play().catch(() => { });
       }
     });
   </script>
