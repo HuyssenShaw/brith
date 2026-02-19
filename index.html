@@ -4,63 +4,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>生日快乐！🎂</title>
-  <!-- 引入CSS样式文件 -->
-  <link rel="stylesheet" href="css/style.css">
+  <title>可瓦摄影 - Photography</title>
+  <style>
+    /* 全局样式重置，消除默认边距 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* 页面基础配置，全屏无滚动 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 全屏主容器 + 动态背景 */
+    .hero {
+      width: 100%;
+      height: 100%;
+      /* 动态渐变背景，如需替换为GIF动图，注释下面2行，打开下方注释的背景代码 */
+      background: linear-gradient(120deg, #85F4D0, #43E97B, #38F9D7, #85F4D0);
+      background-size: 400% 400%;
+      /* 替换为GIF动图的代码：background: url(你的动图文件地址.gif) no-repeat center center; background-size: cover; */
+      animation: bgFlow 15s ease infinite;
+      /* 左右排版核心布局 */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10%;
+      gap: 5%;
+    }
+
+    /* 背景流动动画关键帧 */
+    @keyframes bgFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* 元素通用入场动画：从小变大+淡入平滑效果 */
+    @keyframes scaleIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* 左侧文字内容容器 */
+    .content {
+      flex: 1;
+      color: #000;
+    }
+
+    /* 英文标题样式+入场动画 */
+    .en-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      animation: scaleIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    /* 中文标题样式+入场动画（延迟0.2s触发） */
+    .cn-title {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: 0.5em;
+      line-height: 1.2;
+      margin-bottom: 2.5rem;
+      animation: scaleIn 0.8s ease-out 0.2s forwards;
+      opacity: 0;
+    }
+
+    /* 描述文本样式+入场动画（延迟0.4s触发） */
+    .desc {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.8;
+      max-width: 600px;
+      margin-bottom: 3.5rem;
+      animation: scaleIn 0.8s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    /* 按钮样式+入场动画（延迟0.6s触发） */
+    .contact-btn {
+      padding: 1rem 3rem;
+      border: 2px solid #000;
+      border-radius: 8px;
+      background: transparent;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: scaleIn 0.8s ease-out 0.6s forwards;
+      opacity: 0;
+    }
+
+    /* 按钮hover交互效果 */
+    .contact-btn:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* 右侧图片容器+入场动画（延迟0.3s触发） */
+    .image-wrapper {
+      flex: 0 0 40%;
+      border: 8px solid #000;
+      animation: scaleIn 0.8s ease-out 0.3s forwards;
+      opacity: 0;
+    }
+
+    /* 图片自适应样式 */
+    .image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* 移动端响应式适配，小屏幕垂直排列 */
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        justify-content: center;
+        padding: 5%;
+        gap: 2rem;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .content {
+        text-align: center;
+      }
+
+      .cn-title {
+        letter-spacing: 0.2em;
+      }
+
+      .image-wrapper {
+        width: 80%;
+        flex: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- 全屏背景层 -->
-  <div class="bg-pattern"></div>
-
-  <!-- 第一屏：标题、时钟、交互按钮 -->
-  <div id="header">
-    <!-- 【这里改名字】把“小寿星”换成对方的名字 -->
-    <h1>Hi, 小寿星！</h1>
-
-    <!-- 实时时钟 -->
-    <div id="clock"></div>
-
-    <!-- 切换祝福语按钮 -->
-    <button id="wishBtn">点击查收生日祝福 💖</button>
-    <p id="wishText"></p>
-
-    <!-- 向下滚动提示 -->
-    <div class="scroll-hint">↓ 往下滑有惊喜 ↓</div>
-  </div>
-
-  <!-- 第二屏及以后：滚动内容 -->
-  <div id="content-section">
-    <!-- 许愿输入框 -->
-    <div class="message-box">
-      <h2>🎋 许下你的生日愿望</h2>
-      <input type="text" id="wishInput" placeholder="输入你的愿望，按回车/点按钮提交～">
-      <button id="submitWish">提交愿望</button>
-      <p id="showWish"></p>
+  <div class="hero">
+    <!-- 左侧文字内容区 -->
+    <div class="content">
+      <h1 class="en-title">Photography</h1>
+      <h2 class="cn-title">可瓦摄影</h2>
+      <p class="desc">网站是一种通讯工具，就像布告栏一样，人们可以通过网站来发布自己想要公开的资讯，或者利用网站来提供相关的网络服务。</p>
+      <button class="contact-btn">与我们联系</button>
     </div>
 
-    <!-- 【这里改祝福语】可以复制多个 message-box 增加内容 -->
-    <div class="message-box">
-      <h2>🎂 生日快乐呀！</h2>
-      <p>这是我为你专门写的小网页，希望你喜欢这份特别的礼物～</p>
-    </div>
-
-    <div class="message-box">
-      <h2>✨ 愿你新的一岁</h2>
-      <p>眼里有光，心中有爱，兜里有钱！</p>
-      <p>想要的都拥有，得不到的都释怀～</p>
-    </div>
-
-    <div class="message-box">
-      <h2>💌 来自你的朋友</h2>
-      <p>永远是你坚强的后盾！</p>
-      <p>不管发生什么，我都在～</p>
+    <!-- 右侧图片展示区 -->
+    <div class="image-wrapper">
+      <!-- 请将下方src替换为你的图片地址（本地相对路径/网络图片直链均可） -->
+      <img src="your-photo.jpg" alt="可瓦摄影样片">
     </div>
   </div>
-
-  <!-- 引入JS交互文件 -->
-  <script src="js/script.js"></script>
 </body>
 
 </html>
