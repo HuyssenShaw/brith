@@ -3,41 +3,79 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>可瓦摄影 - Photography</title>
   <style>
-    /* 全局样式重置，消除默认边距 */
+    /* ========== 核心修复：html和body也加入层级控制 ========== */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      /* 禁止双击缩放，防止移动端意外交互 */
+      touch-action: manipulation;
+    }
+
+    /* 全局样式重置 */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* ========== 修改：页面基础配置，允许纵向滚动 ========== */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      width: 100vw;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
       position: relative;
+      /* 确保body有自己的层叠上下文 */
+      z-index: 0;
     }
 
-    /* ========== 修改：MP4背景视频仅占第一屏 ========== */
-    .bg-video {
-      position: absolute;
+    /* ========== 彻底重构：背景视频容器，移动端专属优化 ========== */
+    .video-container {
+      position: fixed !important;
+      /* 强制fixed，比absolute更稳 */
       top: 0;
       left: 0;
-      width: 100%;
+      width: 100vw;
       height: 100vh;
+      overflow: hidden;
+      /* 关键：z-index设为-999，确保在最底层 */
+      z-index: -999;
+      /* 占位背景，视频加载前显示 */
+      background: #1a1a1a url("video-poster.jpg") no-repeat center center / cover;
+      /* 强制创建层叠上下文，隔离视频 */
+      transform: translateZ(0);
+      will-change: transform;
+      pointer-events: none;
+      /* 禁止视频响应任何点击事件 */
+    }
+
+    /* MP4背景视频：移动端终极优化 */
+    .bg-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      /* 居中铺满 */
+      transform: translate(-50%, -50%) translateZ(0);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
       object-fit: cover;
-      z-index: -1;
-      filter: brightness(0.7);
-      /* 保证白色文字清晰，视频过亮可调整数值 */
+      /* 关键：视频层级也设为-999 */
+      z-index: -999;
+      /* 禁止任何交互 */
+      pointer-events: none;
+      /* 防止iOS Safari的黑边 */
+      playsinline: true;
+      webkit-playsinline: true;
     }
 
     /* 全屏主容器（第一屏） */
     .hero {
+      position: relative;
       width: 100%;
       height: 100vh;
       display: flex;
@@ -45,7 +83,7 @@
       justify-content: space-between;
       padding: 0 10%;
       gap: 5%;
-      position: relative;
+      /* 关键：内容层级必须高于视频 */
       z-index: 1;
     }
 
@@ -66,6 +104,9 @@
     .content {
       flex: 1;
       color: #fff;
+      /* 确保文字也在高层级 */
+      position: relative;
+      z-index: 2;
     }
 
     /* 英文标题样式+入场动画 */
@@ -112,6 +153,8 @@
       transition: all 0.3s ease;
       animation: scaleIn 0.8s ease-out 0.6s forwards;
       opacity: 0;
+      position: relative;
+      z-index: 2;
     }
 
     /* 按钮hover交互效果 */
@@ -126,6 +169,8 @@
       border: 8px solid #fff;
       animation: scaleIn 0.8s ease-out 0.3s forwards;
       opacity: 0;
+      position: relative;
+      z-index: 2;
     }
 
     /* 图片自适应样式 */
@@ -136,37 +181,35 @@
       object-fit: cover;
     }
 
-    /* ========== 新增：参与项目板块样式 ========== */
+    /* 参与项目板块样式 */
     .projects {
+      position: relative;
       width: 100%;
       min-height: 100vh;
-      /* 浅灰色背景，可在url内填入雪山背景图地址 */
       background: #edf0f2 url("") no-repeat bottom center / cover;
       padding: 6rem 5%;
-      position: relative;
+      /* 项目板块层级最高，覆盖视频 */
+      z-index: 10;
     }
 
-    /* 参与项目标题：核心向下平滑出现效果 */
+    /* 参与项目标题：向下平滑出现效果 */
     .section-title {
       font-size: clamp(3rem, 8vw, 5rem);
       font-weight: 900;
       text-align: center;
       color: #000;
       margin-bottom: 6rem;
-      /* 初始状态：透明、位置偏上 */
       opacity: 0;
       transform: translateY(-60px);
-      /* 平滑过渡动画 */
       transition: all 0.8s ease-out;
     }
 
-    /* 标题激活状态：滚动到对应位置触发，向下滑入+淡入 */
     .section-title.active {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* 项目网格布局：完美还原上2下3的排版 */
+    /* 项目网格布局 */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -175,7 +218,6 @@
       margin: 0 auto;
     }
 
-    /* 项目卡片通用样式 */
     .project-card {
       text-align: center;
       display: flex;
@@ -184,20 +226,17 @@
       gap: 1rem;
     }
 
-    /* 第一行2个项目，各占3列 */
     .project-card:nth-child(1),
     .project-card:nth-child(2) {
       grid-column: span 3;
     }
 
-    /* 第二行3个项目，各占2列 */
     .project-card:nth-child(3),
     .project-card:nth-child(4),
     .project-card:nth-child(5) {
       grid-column: span 2;
     }
 
-    /* 项目图标样式：橙色，和设计图一致 */
     .project-icon {
       width: 4rem;
       height: 4rem;
@@ -205,7 +244,6 @@
       margin-bottom: 0.5rem;
     }
 
-    /* 项目标题 */
     .project-card h3 {
       font-size: 1.8rem;
       font-weight: 700;
@@ -213,7 +251,6 @@
       margin: 0;
     }
 
-    /* 项目描述文本 */
     .project-card p {
       font-size: 1.1rem;
       line-height: 1.5;
@@ -222,7 +259,7 @@
       margin: 0;
     }
 
-    /* ========== 响应式适配 ========== */
+    /* ========== 响应式适配，移动端专项优化 ========== */
     @media (max-width: 768px) {
 
       /* 首页适配 */
@@ -248,7 +285,7 @@
         flex: none;
       }
 
-      /* 项目板块移动端适配：改为单列布局 */
+      /* 项目板块适配 */
       .projects-grid {
         grid-template-columns: 1fr;
       }
@@ -265,11 +302,13 @@
 </head>
 
 <body>
-  <!-- 第一屏背景视频 -->
-  <video class="bg-video" autoplay loop muted playsinline>
-    <source src="back.mp4" type="video/mp4">
-    你的浏览器不支持视频播放，请升级浏览器
-  </video>
+  <div class="video-container">
+    <video class="bg-video" autoplay loop muted playsinline webkit-playsinline preload="auto" x5-playsinline="true"
+      x5-video-player-type="h5-page" x5-video-player-fullscreen="false" x5-video-orientation="portraint"
+      disablePictureInPicture controlslist="nodownload nofullscreen noremoteplayback" src="back.mp4">
+      <source src="back.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- 第一屏：首页内容 -->
   <div class="hero">
@@ -286,7 +325,7 @@
     </div>
   </div>
 
-  <!-- ========== 新增：参与项目板块 ========== -->
+  <!-- 参与项目板块 -->
   <section class="projects">
     <h2 class="section-title" id="section-title">参与项目</h2>
     <div class="projects-grid">
@@ -346,42 +385,48 @@
   <script>
     // 原有功能：动态时间+生日判断
     window.onload = function () {
-      // 1. 获取当前时间
       const now = new Date();
       const year = now.getFullYear();
-      const month = now.getMonth() + 1; // 月份是0-11，需要+1
+      const month = now.getMonth() + 1;
       const date = now.getDate();
-      const hours = String(now.getHours()).padStart(2, '0'); // 补零，例如 9点 -> 09
+      const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
 
-      // 2. 拼接基础时间文本
       let textContent = `现在是${year}年${month}月${date}日 ${hours}:${minutes}`;
-
-      // 3. 判断是否是生日当天（3月11日）
       if (month === 3 && date === 11) {
         textContent += " 生日快乐！";
       }
-
-      // 4. 将文本放入页面中
       document.getElementById('dynamic-text').innerText = textContent;
+
+      // ========== 核心修复：JS强制静音并尝试播放，解决移动端无法自动播放 ==========
+      const video = document.querySelector('.bg-video');
+      if (video) {
+        video.muted = true; // 强制静音
+        video.playsInline = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+
+        // 尝试自动播放
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log("移动端自动播放被阻止，这是正常的");
+          });
+        }
+      }
     };
 
-    // ========== 新增：滚动监听，实现标题向下平滑出现 ==========
+    // 滚动监听，标题平滑出现
     window.addEventListener('scroll', function () {
       const title = document.getElementById('section-title');
       const projectsSection = document.querySelector('.projects');
-      // 视口高度
       const windowHeight = window.innerHeight;
-      // 项目板块距离页面顶部的距离
       const sectionTop = projectsSection.offsetTop;
-      // 当前滚动距离
       const scrollY = window.scrollY;
 
-      // 当项目板块进入视口时，触发标题出现动画
       if (scrollY + windowHeight > sectionTop + 100) {
         title.classList.add('active');
       } else {
-        // 向上滚动离开板块时，恢复初始状态
         title.classList.remove('active');
       }
     });
