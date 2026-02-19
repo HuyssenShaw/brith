@@ -1,0 +1,210 @@
+/* --- 1. 基础设置（不用改） --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  background-color: #1a1a2e;
+  /* 【这里改底色】深色背景 */
+  color: white;
+  overflow-x: hidden;
+}
+
+/* --- 2. 全屏背景图案 --- */
+.bg-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* 【这里改背景图】把 images/bg.jpg 换成你的图片文件名 */
+  background-image: url('../images/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  /* 【这里改透明度】0-1之间，越小越淡 */
+  z-index: -1;
+}
+
+/* --- 3. 中央标题区域 --- */
+#header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+h1 {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  /* 金色光晕 */
+  transition: all 0.3s ease;
+}
+
+/* 鼠标移到标题上的特效 */
+h1:hover {
+  color: #ffd700;
+  /* 变成金色 */
+  transform: scale(1.1);
+}
+
+/* 时钟样式 */
+#clock {
+  font-size: 2rem;
+  font-family: 'Courier New', monospace;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  padding: 10px 30px;
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.4);
+  margin-bottom: 30px;
+}
+
+/* 祝福语按钮样式 */
+#wishBtn {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #ff6b8b, #ff8e53);
+  /* 粉橙渐变 */
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 107, 139, 0.6);
+  transition: all 0.3s ease;
+}
+
+#wishBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 107, 139, 0.9);
+}
+
+#wishText {
+  margin-top: 25px;
+  font-size: 1.5rem;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 向下滚动提示 */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-20px);
+  }
+
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* --- 4. 滚动内容区域 --- */
+#content-section {
+  min-height: 100vh;
+  padding: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 祝福语卡片样式 */
+.message-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  /* 毛玻璃效果 */
+  padding: 40px;
+  margin: 50px 0;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 卡片出现时的样式 */
+.message-box.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 鼠标移到卡片上的特效 */
+.message-box:hover {
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  transform: translateY(-10px);
+}
+
+.message-box h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ffd700;
+}
+
+.message-box p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+/* 许愿输入框样式 */
+#wishInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+#submitWish {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #4CAF50, #8BC34A);
+  /* 绿色渐变 */
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#submitWish:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+}
+
+#showWish {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #ffd700;
+  font-weight: bold;
+}

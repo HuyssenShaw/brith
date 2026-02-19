@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生日快乐！🎂</title>
+  <!-- 引入CSS样式文件 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- 全屏背景层 -->
+  <div class="bg-pattern"></div>
+
+  <!-- 第一屏：标题、时钟、交互按钮 -->
+  <div id="header">
+    <!-- 【这里改名字】把“小寿星”换成对方的名字 -->
+    <h1>Hi, 小寿星！</h1>
+
+    <!-- 实时时钟 -->
+    <div id="clock"></div>
+
+    <!-- 切换祝福语按钮 -->
+    <button id="wishBtn">点击查收生日祝福 💖</button>
+    <p id="wishText"></p>
+
+    <!-- 向下滚动提示 -->
+    <div class="scroll-hint">↓ 往下滑有惊喜 ↓</div>
+  </div>
+
+  <!-- 第二屏及以后：滚动内容 -->
+  <div id="content-section">
+    <!-- 许愿输入框 -->
+    <div class="message-box">
+      <h2>🎋 许下你的生日愿望</h2>
+      <input type="text" id="wishInput" placeholder="输入你的愿望，按回车/点按钮提交～">
+      <button id="submitWish">提交愿望</button>
+      <p id="showWish"></p>
+    </div>
+
+    <!-- 【这里改祝福语】可以复制多个 message-box 增加内容 -->
+    <div class="message-box">
+      <h2>🎂 生日快乐呀！</h2>
+      <p>这是我为你专门写的小网页，希望你喜欢这份特别的礼物～</p>
+    </div>
+
+    <div class="message-box">
+      <h2>✨ 愿你新的一岁</h2>
+      <p>眼里有光，心中有爱，兜里有钱！</p>
+      <p>想要的都拥有，得不到的都释怀～</p>
+    </div>
+
+    <div class="message-box">
+      <h2>💌 来自你的朋友</h2>
+      <p>永远是你坚强的后盾！</p>
+      <p>不管发生什么，我都在～</p>
+    </div>
+  </div>
+
+  <!-- 引入JS交互文件 -->
+  <script src="js/script.js"></script>
+</body>
+
+</html>
