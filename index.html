@@ -5,15 +5,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>你的小世界</title>
+  <!-- 引入字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <!-- 引入Font Awesome线稿图标 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    /* 全局样式重置 */
+    /* 全局变量与重置 */
+    :root {
+      --primary-color: #8b5cf6;
+      /* 主题色：柔和紫色 */
+      --primary-glow: linear-gradient(135deg, rgba(139, 92, 246, 0.3), transparent);
+      /* 高光渐变 */
+      --dark-footer-bg: #1f2937;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* 页面基础配置：允许纵向滚动 */
     html,
     body {
       width: 100%;
@@ -21,12 +36,19 @@
       overflow-x: hidden;
       scroll-behavior: smooth;
       background: #0f0c29;
-      /* 最底层的深色背景 */
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-family: 'Noto Serif SC', serif;
+      /* 中文默认字体 */
       position: relative;
+    }
+
+    /* 英文专用字体 */
+    .en-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.05em;
     }
 
     /* ========== particles.js 容器样式 ========== */
@@ -37,13 +59,12 @@
       top: 0;
       left: 0;
       z-index: 0;
-      /* 关键：放在背景和内容之间 */
     }
 
-    /* ========== 第一页：极光风格渐变背景（半透明，透出粒子） ========== */
+    /* ========== 第1部分：Hero开篇区 ========== */
     .hero {
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -51,8 +72,6 @@
       gap: 5%;
       position: relative;
       z-index: 1;
-      /* 内容在粒子上层 */
-      /* 核心修改：所有颜色后面加了 alpha 透明度 (0.7-0.8)，让粒子透出来 */
       background: linear-gradient(-45deg,
           rgba(15, 12, 41, 0.8),
           rgba(48, 43, 99, 0.8),
@@ -67,7 +86,6 @@
       animation: auroraFlow 12s ease-in-out infinite;
     }
 
-    /* 极光流动动画 */
     @keyframes auroraFlow {
       0% {
         background-position: 0% 50%;
@@ -90,7 +108,6 @@
       }
     }
 
-    /* 元素通用入场动画 */
     @keyframes scaleIn {
       0% {
         opacity: 0;
@@ -103,7 +120,6 @@
       }
     }
 
-    /* 左侧文字内容容器 - 居中排版 */
     .content {
       flex: 1;
       color: #fff;
@@ -113,9 +129,9 @@
       align-items: center;
     }
 
-    /* 英文标题样式+入场动画 */
+    /* 英文标题：小而精 */
     .en-title {
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: clamp(2rem, 5vw, 4rem);
       font-weight: 600;
       line-height: 1.1;
       margin-bottom: 1rem;
@@ -123,9 +139,9 @@
       opacity: 0;
     }
 
-    /* 中文标题样式+入场动画 */
+    /* 中文标题：大而粗 */
     .cn-title {
-      font-size: clamp(2rem, 5vw, 4rem);
+      font-size: clamp(2.5rem, 6vw, 5rem);
       font-weight: 900;
       letter-spacing: 0.2em;
       line-height: 1.2;
@@ -134,26 +150,22 @@
       opacity: 0;
     }
 
-    /* 描述文本样式+入场动画 */
-    .desc {
-      font-size: clamp(1rem, 2vw, 1.25rem);
+    .desc,
+    .warm-text {
+      font-weight: 600;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
       line-height: 1.8;
       max-width: 600px;
-      margin-bottom: 3.5rem;
+      margin-bottom: 2rem;
       animation: scaleIn 0.8s ease-out 0.4s forwards;
       opacity: 0;
     }
 
-    /* 温暖文案样式 */
     .warm-text {
-      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-      line-height: 2.2;
       color: #e2e8f0;
-      animation: scaleIn 0.8s ease-out 0.6s forwards;
-      opacity: 0;
+      animation-delay: 0.6s;
     }
 
-    /* 右侧图片容器 */
     .image-wrapper {
       flex: 0 0 40%;
       border: 8px solid #fff;
@@ -169,36 +181,104 @@
       object-fit: cover;
     }
 
-    /* ========== 第二页：极光风格背景 + 白色字体（半透明，透出粒子） ========== */
-    .interaction {
+    /* ========== 第2部分：主内容区（4+8非对称网格） ========== */
+    .main-body {
       position: relative;
-      width: 100%;
-      min-height: 100vh;
-      /* 核心修改：背景改成半透明 */
-      background: linear-gradient(135deg,
-          rgba(15, 12, 41, 0.85),
-          rgba(48, 43, 99, 0.85),
-          rgba(102, 126, 234, 0.8),
-          rgba(118, 75, 162, 0.8),
-          rgba(240, 147, 251, 0.75));
-      background-size: 300% 300%;
-      animation: auroraFlow 15s ease-in-out infinite;
-      padding: 4rem 10%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       z-index: 1;
-      /* 内容在粒子上层 */
+      padding: 6rem 10%;
+      display: grid;
+      grid-template-columns: 3fr 7fr;
+      /* 非对称4+8比例 */
+      gap: 3rem;
+      align-items: start;
+      background: linear-gradient(135deg, rgba(15, 12, 41, 0.75), rgba(48, 43, 99, 0.75));
     }
 
-    /* 选项容器 */
-    .options-container {
-      width: 100%;
-      max-width: 500px;
+    /* 4列：侧边装饰区 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .sidebar-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 高光效果 */
+    .sidebar-card::before,
+    .main-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: var(--primary-glow);
+      pointer-events: none;
+    }
+
+    .sidebar-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-desc {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    /* 8列：核心信息区（紧凑布局） */
+    .core-content {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+    }
+
+    .main-card {
+      background: rgba(255, 255, 255, 0.3);
+      /* 30%白底 */
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-card .cn-title {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 1.5rem;
+      animation: none;
+      opacity: 1;
+      letter-spacing: 0.1em;
+      color: #1f2937;
+      /* 深色文字 */
+    }
+
+    .options-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       transition: all 0.5s ease-out;
     }
 
@@ -209,21 +289,48 @@
       display: none;
     }
 
-    /* 选项按钮 - 白色字体 + 半透明背景 */
     .option-btn {
-      padding: 1.2rem 1.5rem;
+      padding: 1.5rem 2rem;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.3);
+      /* 30%白底 */
       backdrop-filter: blur(10px);
       font-size: 1.1rem;
+      font-weight: 600;
       line-height: 1.5;
-      color: #fff;
+      color: #1f2937;
+      /* 深色文字 */
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: left;
+      position: relative;
+      overflow: hidden;
       opacity: 0;
       transform: translateY(-20px);
+    }
+
+    .option-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: var(--primary-glow);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .option-btn:hover::before {
+      opacity: 1;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+      background: rgba(255, 255, 255, 0.4);
     }
 
     .option-btn.visible {
@@ -231,22 +338,14 @@
       transform: translateY(0);
     }
 
-    .option-btn:hover {
-      border-color: rgba(255, 255, 255, 0.6);
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-    }
-
-    /* 回复区域 */
     .reply-container {
       width: 100%;
-      max-width: 500px;
       text-align: center;
       display: none;
       opacity: 0;
       transform: scale(0.6);
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding-top: 2rem;
     }
 
     .reply-container.show {
@@ -256,25 +355,69 @@
     }
 
     .reply-text {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
+      font-weight: 700;
       line-height: 1.8;
-      color: #fff;
+      color: #1f2937;
+      /* 深色文字 */
     }
 
-    /* 底部小字 - 浅白色 */
-    .footer-text {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.9rem;
-      color: #e2e8f0;
+
+    /* ========== 第4部分：深色页脚 ========== */
+    .dark-footer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 4rem 10%;
+      background: var(--dark-footer-bg);
       text-align: center;
-      max-width: 80%;
+    }
+
+    .footer-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .footer-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-desc {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #9ca3af;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .footer-footer-text {
+      font-size: 0.95rem;
+      color: #6b7280;
       line-height: 1.6;
     }
 
-    /* 移动端响应式适配 */
+    /* ========== 响应式适配 ========== */
+    @media (max-width: 1024px) {
+      .main-body {
+        grid-template-columns: 1fr;
+        padding: 4rem 8%;
+      }
+
+      .sidebar {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      .sidebar-card {
+        flex: 1 1 calc(50% - 1rem);
+      }
+    }
+
     @media (max-width: 768px) {
       .hero {
         flex-direction: column;
@@ -283,11 +426,6 @@
         gap: 2rem;
         height: auto;
         min-height: 100vh;
-        overflow-y: auto;
-      }
-
-      .cn-title {
-        letter-spacing: 0.1em;
       }
 
       .image-wrapper {
@@ -295,8 +433,17 @@
         flex: none;
       }
 
-      .interaction {
-        padding: 3rem 8%;
+      .sidebar {
+        flex-direction: column;
+      }
+
+      .sidebar-card {
+        flex: 1 1 100%;
+      }
+
+      .mid-breaker,
+      .dark-footer {
+        padding: 4rem 8%;
       }
 
       .option-btn {
@@ -310,10 +457,10 @@
   <!-- particles.js 容器 -->
   <div id="particles-js"></div>
 
-  <!-- 第一屏：首页内容 -->
+  <!-- 第1部分：Hero开篇 -->
   <div class="hero">
     <div class="content">
-      <h1 class="en-title">NiceToMeetYou</h1>
+      <h1 class="en-title en-text">NiceToMeetYou</h1>
       <h2 class="cn-title">Hi,今日好</h2>
       <p class="desc" id="dynamic-text"></p>
       <p class="warm-text">
@@ -322,28 +469,69 @@
         好好吃饭，好好睡觉
       </p>
     </div>
-
-    <!-- 右侧图片 -->
     <div class="image-wrapper">
       <img src="cat.jpg" alt="小猫照片">
     </div>
   </div>
 
-  <!-- 第二屏：互动页 -->
-  <section class="interaction" id="interaction">
-    <div class="options-container" id="optionsContainer">
-      <button class="option-btn" data-type="happy">如果你今天很开心 / 遇到了好事</button>
-      <button class="option-btn" data-type="chill">如果你只是摸鱼随便逛逛</button>
-      <button class="option-btn" data-type="tired">如果你现在有点累 / 有点烦</button>
-      <button class="option-btn" data-type="struggle">如果你又在跟自己较劲 / 绷着神经</button>
-    </div>
+  <!-- 第2部分：主内容区（4+8非对称网格） -->
+  <section class="main-body">
+    <!-- 4列：侧边装饰区 -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <i class="fa-regular fa-sun sidebar-icon"></i>
+        <h3 class="sidebar-title">小开心</h3>
+        <p class="sidebar-desc">今天的风很温柔，云也很好看。</p>
+      </div>
+      <div class="sidebar-card">
+        <i class="fa-regular fa-moon sidebar-icon"></i>
+        <h3 class="sidebar-title">小放松</h3>
+        <p class="sidebar-desc">累了就歇会儿，不用逼自己那么紧。</p>
+      </div>
+      <div class="sidebar-card">
+        <i class="fa-regular fa-heart sidebar-icon"></i>
+        <h3 class="sidebar-title">小温暖</h3>
+        <p class="sidebar-desc">你值得这世间所有的美好。</p>
+      </div>
+    </aside>
 
-    <div class="reply-container" id="replyContainer">
-      <p class="reply-text" id="replyText"></p>
+    <!-- 8列：核心信息区（互动部分） -->
+    <div class="core-content" id="interaction">
+      <div class="main-card">
+        <h3 class="cn-title">今天过得怎么样？</h3>
+        <div class="options-container" id="optionsContainer">
+          <button class="option-btn" data-type="happy">
+            <i class="fa-regular fa-face-smile" style="margin-right: 1rem; color: var(--primary-color);"></i>
+            如果你今天很开心 / 遇到了好事
+          </button>
+          <button class="option-btn" data-type="chill">
+            <i class="fa-regular fa-face-grin" style="margin-right: 1rem; color: var(--primary-color);"></i>
+            如果你只是摸鱼随便逛逛
+          </button>
+          <button class="option-btn" data-type="tired">
+            <i class="fa-regular fa-face-tired" style="margin-right: 1rem; color: var(--primary-color);"></i>
+            如果你现在有点累 / 有点烦
+          </button>
+          <button class="option-btn" data-type="struggle">
+            <i class="fa-regular fa-face-frown" style="margin-right: 1rem; color: var(--primary-color);"></i>
+            如果你又在跟自己较劲 / 绷着神经
+          </button>
+        </div>
+        <div class="reply-container" id="replyContainer">
+          <p class="reply-text" id="replyText"></p>
+        </div>
+      </div>
     </div>
-
-    <p class="footer-text" id="footerText"></p>
   </section>
+
+  <!-- 第4部分：深色页脚 -->
+  <footer class="dark-footer">
+    <div class="footer-content">
+      <h3 class="footer-title">想对你说</h3>
+      <p class="footer-desc">不管今天过得如何，都要记得好好照顾自己。你很重要，你的感受也很重要。</p>
+      <p class="footer-footer-text" id="footerText"></p>
+    </div>
+  </footer>
 
   <!-- 内嵌 particles.js 代码 -->
   <script>
@@ -352,13 +540,12 @@
 
   <!-- JavaScript：原有功能 + 粒子初始化 -->
   <script>
-    // ========== 统一的 window.onload ==========
     window.onload = function () {
-      // 1. 初始化粒子效果 (白色粒子，配合极光)
+      // 1. 初始化粒子效果
       particlesJS('particles-js', {
         "particles": {
           "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-          "color": { "value": "#ffffff" }, // 白色粒子
+          "color": { "value": "#ffffff" },
           "shape": { "type": "circle" },
           "opacity": { "value": 0.5 },
           "size": { "value": 3, "random": true },
@@ -391,7 +578,6 @@
       initFooterText();
     };
 
-    // ========== 底部随机小字 ==========
     const footerTexts = [
       "下次来的时候，可以跟我说说你最近的小事",
       "要是有什么想让我加在这里的，随时跟我说",
@@ -403,7 +589,6 @@
       document.getElementById('footerText').innerText = footerTexts[randomIndex];
     }
 
-    // ========== 互动回复语料库 ==========
     const replies = {
       happy: [
         "太棒啦！快说说遇到什么有意思的事了",
@@ -427,7 +612,7 @@
       ]
     };
 
-    // ========== 滚动监听：第二屏元素出现动画 ==========
+    // 滚动监听：互动按钮出现动画
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -445,7 +630,7 @@
 
     observer.observe(document.getElementById('interaction'));
 
-    // ========== 按钮点击交互 ==========
+    // 按钮点击交互
     document.querySelectorAll('.option-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         const type = this.getAttribute('data-type');
@@ -453,15 +638,12 @@
         const replyContainer = document.getElementById('replyContainer');
         const replyText = document.getElementById('replyText');
 
-        // 1. 隐藏选项
         optionsContainer.classList.add('hide');
 
-        // 2. 随机选择回复
         const replyList = replies[type];
         const randomReply = replyList[Math.floor(Math.random() * replyList.length)];
         replyText.innerText = randomReply;
 
-        // 3. 显示回复
         setTimeout(() => {
           replyContainer.classList.add('show');
         }, 300);
