@@ -255,7 +255,7 @@
       display: grid;
       grid-template-columns: 3fr 7fr;
       gap: 3rem;
-      align-items: start;
+      align-items: center;
     }
 
     /* 4列：侧边装饰区 */
@@ -269,7 +269,7 @@
 
     .sidebar-card {
       border-radius: 20px;
-      padding: 2rem;
+      padding: 1rem;
     }
 
     .sidebar-icon {
@@ -295,7 +295,7 @@
     /* 视觉锚点 */
     .visual-anchor {
       text-align: center;
-      padding: 1.5rem 0;
+      padding: 0.5rem 0;
       margin-bottom: 0.5rem;
     }
 
@@ -386,7 +386,7 @@
       opacity: 0;
       transform: scale(0.9) translateY(10px);
       transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      padding-top: 1rem;
+      padding-top: 3rem;
       display: none;
     }
 
@@ -417,7 +417,7 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      padding: 3rem 8%;
+      padding: 2rem 8%;
       background: var(--dark-footer-bg);
       text-align: center;
     }
@@ -455,6 +455,8 @@
       .qa-section {
         grid-template-columns: 1fr;
         padding: 4rem 8%;
+        align-items: flex-start;
+        /* 单列布局时恢复顶部对齐 */
       }
 
       .sidebar {
@@ -462,6 +464,12 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 1.5rem;
+        align-items: center;
+        /* 横向布局时垂直居中内部元素 */
+        min-height: auto;
+        /* 取消min-height，避免移动端高度异常 */
+        margin-bottom: 2rem;
+        /* 与右侧内容拉开间距 */
       }
 
       .sidebar-card {
@@ -515,6 +523,7 @@
 
       .sidebar {
         flex-direction: column;
+        align-items: stretch;
       }
 
       .sidebar-card {
@@ -544,7 +553,7 @@
       .mid-breaker,
       .dark-footer,
       .qa-section {
-        padding: 4rem 8%;
+        padding: 2rem 8%;
       }
 
       .option-btn {
@@ -592,9 +601,7 @@
     <!-- 4列：侧边装饰区 -->
     <aside class="sidebar">
       <!-- 视觉锚点 -->
-      <div class="visual-anchor">
-        <i class="fa-regular fa-heart"></i>
-      </div>
+
 
       <div class="sidebar-card glass-card animate-on-scroll">
         <i class="fa-regular fa-sun sidebar-icon"></i>
