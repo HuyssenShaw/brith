@@ -949,8 +949,8 @@
             
             ${(hasA || hasB) ? `
               <div class="mt-6 space-y-4">
-                ${hasA ? `<div class="bg-green-500/10 p-4 rounded-xl border border-green-500/20"><span class="text-xs text-green-300 font-bold uppercase">TA 写的</span><p class="text-white/80 mt-1">${existingAnswers.find(a => a.person === 'A').content}</p></div>` : ''}
-                ${hasB ? `<div class="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20"><span class="text-xs text-blue-300 font-bold uppercase">你 写的</span><p class="text-white/80 mt-1">${existingAnswers.find(a => a.person === 'B').content}</p></div>` : ''}
+                ${hasA ? `<div class="bg-green-500/10 p-4 rounded-xl border border-green-500/20"><span class="text-xs text-green-300 font-bold uppercase">你 写的</span><p class="text-white/80 mt-1">${existingAnswers.find(a => a.person === 'A').content}</p></div>` : ''}
+                ${hasB ? `<div class="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20"><span class="text-xs text-blue-300 font-bold uppercase">TA 写的</span><p class="text-white/80 mt-1">${existingAnswers.find(a => a.person === 'B').content}</p></div>` : ''}
               </div>
             ` : ''}
           </div>
