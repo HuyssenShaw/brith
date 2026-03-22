@@ -341,12 +341,12 @@
     }
 
     .option-btn {
-      padding: 1.4rem 1.8rem;
+      padding: 1.2rem 1.5rem;
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-size: clamp(0.85rem, 1.8vw, 1rem);
       font-weight: 600;
       line-height: 1.5;
       color: #fff;
@@ -401,6 +401,7 @@
       font-weight: 700;
       line-height: 1.8;
       color: #fff;
+      text-align: center;
     }
 
     /* ========== 第3部分：30天问答区 ========== */
@@ -416,7 +417,7 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      padding: 4rem 10%;
+      padding: 3rem 8%;
       background: var(--dark-footer-bg);
       text-align: center;
     }
@@ -427,24 +428,24 @@
     }
 
     .footer-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(1.4rem, 3vw, 2rem);
       font-weight: 900;
       color: #fff;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .footer-desc {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: #9ca3af;
-      line-height: 1.8;
-      margin-bottom: 2rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
     }
 
     .footer-footer-text {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: #6b7280;
-      line-height: 1.6;
+      line-height: 1.4;
     }
 
     /* ========== 响应式适配 ========== */
@@ -465,6 +466,25 @@
 
       .sidebar-card {
         flex: 1 1 calc(50% - 1rem);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+      }
+
+      .sidebar-icon {
+        font-size: 2rem;
+        margin-bottom: 0;
+      }
+
+      .sidebar-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .sidebar-desc {
+        font-size: 0.95rem;
       }
 
       .visual-anchor {
@@ -475,16 +495,22 @@
     @media (max-width: 768px) {
       .hero {
         flex-direction: column;
-        justify-content: center;
-        padding: 5%;
+        justify-content: flex-start;
+        padding: 15% 5% 10%;
         gap: 2rem;
         height: auto;
         min-height: 100vh;
       }
 
+      .content {
+        padding-top: 2rem;
+      }
+
       .image-wrapper {
         width: 85%;
         flex: none;
+        margin-top: -1rem;
+        transform: translateY(-10px);
       }
 
       .sidebar {
@@ -493,6 +519,26 @@
 
       .sidebar-card {
         flex: 1 1 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem;
+      }
+
+      .sidebar-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0;
+      }
+
+      .sidebar-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar-desc {
+        font-size: 0.9rem;
+        line-height: 1.5;
       }
 
       .mid-breaker,
@@ -552,18 +598,24 @@
 
       <div class="sidebar-card glass-card animate-on-scroll">
         <i class="fa-regular fa-sun sidebar-icon"></i>
-        <h3 class="sidebar-title">小开心</h3>
-        <p class="sidebar-desc">今天的风很温柔，云也很好看。</p>
+        <div>
+          <h3 class="sidebar-title">小开心</h3>
+          <p class="sidebar-desc">今天的风很温柔，云也很好看。</p>
+        </div>
       </div>
       <div class="sidebar-card glass-card animate-on-scroll" style="animation-delay: 0.1s;">
         <i class="fa-regular fa-moon sidebar-icon"></i>
-        <h3 class="sidebar-title">小放松</h3>
-        <p class="sidebar-desc">累了就歇会儿，不用逼自己那么紧。</p>
+        <div>
+          <h3 class="sidebar-title">小放松</h3>
+          <p class="sidebar-desc">累了就歇会儿，不用逼自己那么紧。</p>
+        </div>
       </div>
       <div class="sidebar-card glass-card animate-on-scroll" style="animation-delay: 0.2s;">
         <i class="fa-regular fa-heart sidebar-icon"></i>
-        <h3 class="sidebar-title">小温暖</h3>
-        <p class="sidebar-desc">你值得这世间所有的美好。</p>
+        <div>
+          <h3 class="sidebar-title">小温暖</h3>
+          <p class="sidebar-desc">你值得这世间所有的美好。</p>
+        </div>
       </div>
     </aside>
 
@@ -697,19 +749,24 @@
         "真好，你开心的话，我也跟着开心"
       ],
       chill: [
-        "今天有没有喝到好喝的奶茶？",
+        "这种松弛感太珍贵啦，好好享受～",
         "摸鱼快乐！小心别被人抓到啦",
         "要是没什么事，就多陪我待一会儿呗"
       ],
       tired: [
-        "不想做的事就先放放，不是必须今天做完",
+        "辛苦了，今天早点休息吧",
+        "累的话就放空一下，什么都别想",
         "要是不开心，可以和我说说，不用担心打扰",
-        "休息一会儿吧，你已经做得够多了"
+        "休息一会儿吧，你已经做得够多了",
+        "抱抱你，明天会轻松一点的"
       ],
       struggle: [
         "不用事事都做到完美，不完美也没关系",
         "不管做的正确与否，你的行为都是很可爱的小事",
-        "说不出话也没关系，好好缓缓放空"
+        "说不出话也没关系，好好缓缓放空",
+        "虽然很难，但你已经在坚持了，超棒的",
+        "慢慢来，一步一步走总会过去的",
+        "你不是一个人在扛，我陪着你"
       ]
     };
 
@@ -739,16 +796,18 @@
         const replyContainer = document.getElementById('replyContainer');
         const replyText = document.getElementById('replyText');
 
-        // 按钮淡出（不改变高度）
+        // 1. 先让按钮淡出（触发CSS的opacity动画）
         optionsContainer.classList.add('fade-out');
 
+        // 2. 从回复库中随机选一条
         const replyList = replies[type];
         const randomReply = replyList[Math.floor(Math.random() * replyList.length)];
         replyText.innerText = randomReply;
 
-        // 淡入回答
+        // 3. 延迟0.3秒（等淡出动画结束）
         setTimeout(() => {
-          replyContainer.classList.add('show');
+          optionsContainer.style.display = 'none'; // 彻底隐藏按钮（不占空间）
+          replyContainer.classList.add('show');    // 淡入显示回复文本
         }, 300);
       });
     });
